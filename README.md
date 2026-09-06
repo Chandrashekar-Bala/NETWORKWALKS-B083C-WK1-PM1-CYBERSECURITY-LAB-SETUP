@@ -88,10 +88,10 @@ This repository implements the Week 01 laboratory foundation: virtualization, Ka
                     Windows + VirtualBox 7.2.16
                                │
                                │
-                    ┌──────────▼──────────┐
+                    ┌──────────▼───────────┐
                     │      NatNetwork      │
                     │     10.0.0.0/24      │
-                    │      Gateway .1       │
+                    │      Gateway .1      │
                     └──────────┬───────────┘
                                │
                         ┌──────▼──────┐
@@ -106,7 +106,7 @@ This repository implements the Week 01 laboratory foundation: virtualization, Ka
 
 ### Network Design
 
-| Component | Configuration |
+| Component | Configuration      |
 |---|---|
 | Virtual Network | `NatNetwork` |
 | Network Type | NAT Network |
