@@ -1,249 +1,259 @@
 <div align="center">
 
-# 🛡️ Week 01 — Cybersecurity Lab Setup
+# 🔐 Cybersecurity Lab Environment Setup
 
-**VirtualBox + Kali Linux | NAT Network | `10.0.0.0/24`**
+### Building a controlled VirtualBox + Kali Linux environment for cybersecurity experimentation
 
-A documented, repeatable base environment for cybersecurity and penetration-testing practice.
-
-<br>
-
-<img src="https://img.shields.io/badge/VirtualBox-7.2.16-183A61?style=for-the-badge&logo=virtualbox&logoColor=white">
-<img src="https://img.shields.io/badge/Kali%20Linux-2026.2-557C94?style=for-the-badge&logo=kalilinux&logoColor=white">
-<img src="https://img.shields.io/badge/Network-10.0.0.0%2F24-0B7285?style=for-the-badge">
-<img src="https://img.shields.io/badge/Status-Complete-2E8B57?style=for-the-badge">
+<p>
+  <img src="https://img.shields.io/badge/Cybersecurity-Lab-0B5FFF?style=flat-square" />
+  <img src="https://img.shields.io/badge/VirtualBox-7.2.16-183A61?style=flat-square" />
+  <img src="https://img.shields.io/badge/Kali%20Linux-2026.2-557C94?style=flat-square&logo=kalilinux&logoColor=white" />
+  <img src="https://img.shields.io/badge/Network-10.0.0.0%2F24-2D7D46?style=flat-square" />
+  <img src="https://img.shields.io/badge/Environment-Isolated%20Lab-6A5ACD?style=flat-square" />
+</p>
 
 </div>
 
 ---
 
-## 📌 What I Built
+## 📌 Project Overview
 
-Week 1 was about building the foundation for the rest of my cybersecurity lab.
+This project documents the setup of my Week 01 cybersecurity laboratory using **VirtualBox** and **Kali Linux**.
 
-The target was simple on paper: get Kali Linux running in VirtualBox, put it on the required private network, give it a fixed address, verify Internet access, configure host/guest integration, and create a recovery point.
+The goal was not simply to install a virtual machine, but to build a **repeatable security-testing environment** with a predictable network configuration, host/guest integration, recovery points, and verified connectivity.
 
-In practice, I treated it like a small infrastructure build.
+The lab is designed as a foundation for future work involving reconnaissance, network security, web application testing, vulnerability assessment, packet analysis, and other authorized cybersecurity exercises.
 
-I checked what the machine was actually doing, verified each layer with commands, and worked through the problems instead of reinstalling the VM whenever something went wrong.
-
-The final result is a working Kali attacker environment on `10.0.0.2/24` with verified gateway, Internet, and DNS connectivity, matching Guest Additions, shared storage, and a snapshot-based recovery strategy.
+> **Note:** The order of the images may vary from the actual setup sequence. The screenshots are included as supporting evidence for the configuration and verification steps.
 
 ---
 
-## 🎯 Week 01 Requirements
+## 🎯 Objectives
 
-The lab was built against these requirements:
+The primary objectives of this lab were to:
 
-| Requirement | Target | Result |
-|---|---|:---:|
-| Hypervisor | VirtualBox | ✅ |
-| VirtualBox version | `7.2.16` | ✅ |
-| Attacker VM | Kali Linux `2026.2` | ✅ |
-| Network type | NAT Network | ✅ |
-| Network | `10.0.0.0/24` | ✅ |
-| Kali address | `10.0.0.2/24` | ✅ |
-| Gateway | `10.0.0.1` | ✅ |
-| Internet access | Required | ✅ |
-| DNS resolution | Working | ✅ |
-| Shared Clipboard | Bidirectional | ✅ |
-| Drag & Drop | Enabled | ✅ |
-| Host shared folder | `downloads` | ✅ |
-| VM snapshot | Required baseline | ✅ |
-
-> The supplied Week 1 brief specifies VirtualBox, Kali Linux, a `10.0.0.0/24` NAT Network, Kali at `10.0.0.2/24`, clipboard/Drag & Drop, a host `downloads` share, Internet access, and a VM snapshot. fileciteturn3file0L3-L12
+- Install and configure VirtualBox as the virtualization platform.
+- Import and configure Kali Linux as the primary security-testing VM.
+- Create a dedicated **NAT Network** using `10.0.0.0/24`.
+- Assign Kali a predictable address of `10.0.0.2/24`.
+- Establish gateway, Internet, and DNS connectivity.
+- Configure clipboard, drag-and-drop, and shared-folder integration.
+- Install a matching VirtualBox Guest Additions environment.
+- Create a clean VM snapshot for recovery.
+- Verify the final environment using practical network and system checks.
+- Document the setup so the environment can be reproduced and extended later.
 
 ---
 
-## 🗺️ Lab Topology
+## 🛡️ Purpose of the Lab
+
+This laboratory provides a **controlled environment for learning and authorized security testing**.
+
+A dedicated virtual network makes it possible to add additional machines later and build realistic attacker/target scenarios without mixing the lab directly with the host's normal network.
+
+Potential future exercises include:
 
 ```text
-                         ┌──────────────────┐
-                         │     INTERNET     │
-                         └────────┬─────────┘
-                                  │
-                           VirtualBox NAT
-                                  │
-                         ┌────────▼────────┐
-                         │   NatNetwork    │
-                         │   10.0.0.0/24   │
-                         │   Gateway .1    │
-                         └────────┬────────┘
-                                  │
-                         ┌────────▼────────┐
-                         │   Kali Linux    │
-                         │      eth0       │
-                         │   10.0.0.2/24   │
-                         │    Attacker     │
-                         └─────────────────┘
-
-             Future Windows / Linux / vulnerable VMs
-                    can be added to 10.0.0.0/24
+Reconnaissance
+      ↓
+Port & Service Enumeration
+      ↓
+Vulnerability Assessment
+      ↓
+Web Security Testing
+      ↓
+Exploitation Practice
+      ↓
+Detection / Analysis
+      ↓
+Remediation & Reporting
 ```
 
-### Why this design?
-
-I kept the design deliberately straightforward.
-
-- **NAT Network** gives me a private VM network that can later contain multiple machines.
-- **`10.0.0.0/24`** keeps the address plan easy to understand and document.
-- **`10.0.0.2`** gives the Kali attacker a predictable address for later scripts, notes, scans, and lab exercises.
-- **Snapshots** give me a known-good point to return to before risky work.
-
-The goal is a lab that I can break on purpose later without making the host machine part of the experiment.
+⚠️ **Ethical Use:** All testing must be performed only against systems that I own or have explicit authorization to assess.
 
 ---
 
-# ⚙️ Environment
+## 🧭 Original Lab Heading
 
-| Component | Final configuration |
+### Week 01 — Lab Setup: VirtualBox and Kali Linux
+
+This repository implements the Week 01 laboratory foundation: virtualization, Kali Linux deployment, private networking, host/guest integration, connectivity validation, and a recoverable baseline.
+
+---
+
+## 🏗️ Lab Architecture
+
+```text
+                         HOST MACHINE
+                    Windows + VirtualBox 7.2.16
+                               │
+                               │
+                    ┌──────────▼──────────┐
+                    │      NatNetwork      │
+                    │     10.0.0.0/24      │
+                    │      Gateway .1       │
+                    └──────────┬───────────┘
+                               │
+                        ┌──────▼──────┐
+                        │ Kali Linux  │
+                        │   2026.2    │
+                        │ 10.0.0.2/24 │
+                        └─────────────┘
+
+        Future target / analysis VMs can be added later:
+                  10.0.0.3 → 10.0.0.99
+```
+
+### Network Design
+
+| Component | Configuration |
 |---|---|
-| Host | Windows |
-| Hypervisor | VirtualBox `7.2.16` |
-| Guest | Kali Linux `2026.2` |
-| Desktop | XFCE |
-| Session | X11 |
-| Kali CPU | 2 vCPU |
-| Kali RAM | 2048 MB |
-| Adapter | NAT Network |
-| NAT Network | `NatNetwork` |
-| Subnet | `10.0.0.0/24` |
-| Kali IP | `10.0.0.2/24` |
+| Virtual Network | `NatNetwork` |
+| Network Type | NAT Network |
+| IPv4 Prefix | `10.0.0.0/24` |
 | Gateway | `10.0.0.1` |
-| Guest Additions | `7.2.16r174877` |
-| Shared folder | `downloads` |
-| Promiscuous mode | Allow All |
+| Kali Address | `10.0.0.2/24` |
+| DNS | `10.0.0.1`, `8.8.8.8` |
+| Future VM Range | `10.0.0.3–10.0.0.99` |
+
+### Why NAT Network?
+
+I selected **NAT Network** instead of a standard NAT adapter because the lab is intended to grow beyond a single VM.
+
+It provides a practical balance:
+
+```text
+Virtual Machine ↔ Virtual Machine
+        │
+        └──────────────► Lab Network
+                              │
+                              ▼
+                         NAT Gateway
+                              │
+                              ▼
+                           Internet
+```
+
+This allows future attacker and target systems to communicate on the same controlled virtual subnet while still providing outbound connectivity.
 
 ---
 
-# 🪜 Setup Process
+## ⚙️ Lab Configuration
 
-## 1. Create the NAT Network
-
-In VirtualBox:
-
-```text
-Tools
-→ Network
-→ NAT Networks
-→ Create
-```
-
-Configuration:
-
-```text
-Name:          NatNetwork
-IPv4 Prefix:   10.0.0.0/24
-DHCP:          Enabled
-IPv6:          Disabled
-```
-
-The important part here is that the VirtualBox NAT Network and the lab subnet match.
-
-I verified the network in the VirtualBox GUI before changing anything inside Kali.
+| 🧩 Component | ⚙️ Final Configuration |
+|---|---|
+| Host OS | Windows |
+| Hypervisor | VirtualBox `7.2.16` |
+| Security OS | Kali Linux `2026.2` |
+| Kali RAM | `2048 MB` |
+| Virtual Network | `NatNetwork` |
+| Network Range | `10.0.0.0/24` |
+| Kali IP | `10.0.0.2/24` |
+| Default Gateway | `10.0.0.1` |
+| DNS | `10.0.0.1`, `8.8.8.8` |
+| Adapter | Intel PRO/1000 MT Desktop |
+| Promiscuous Mode | Allow All |
+| Clipboard | Bidirectional |
+| Drag & Drop | Bidirectional |
+| Shared Folder | `downloads` |
+| Snapshot | Clean baseline |
 
 ---
 
-## 2. Register the Kali VM
+# 🪜 Lab Setup Procedure
 
-The Kali VirtualBox image was extracted and the existing `.vbox` machine definition was registered in VirtualBox.
+## Step 1. Install VirtualBox
 
-I used the existing VM definition instead of manually rebuilding the machine because the supplied Kali image already contained the guest configuration and virtual disk.
+VirtualBox was installed as the hypervisor used to create and manage the cybersecurity laboratory.
 
-The VM was kept at:
+The final host version used for this project was:
 
 ```text
-2 CPUs
-2048 MB RAM
+VirtualBox 7.2.16
 ```
 
-and Adapter 1 was attached to:
+The objective at this stage was to establish a stable virtualization platform before creating the lab network and importing Kali.
+
+---
+
+## Step 2. Create the NAT Network
+
+A dedicated NAT Network named `NatNetwork` was created in VirtualBox.
 
 ```text
-NAT Network
-└── NatNetwork
+Network Name : NatNetwork
+IPv4 Prefix  : 10.0.0.0/24
+DHCP         : Enabled
+IPv6         : Disabled
+```
+
+![NAT Network Configuration](2-screenshot-network-settings-1.png)
+
+### Why `10.0.0.0/24`?
+
+A `/24` network provides a simple and predictable private IPv4 space for the lab while leaving enough addresses for future machines.
+
+The important addresses in this design are:
+
+```text
+10.0.0.1   → Gateway
+10.0.0.2   → Kali Linux
+10.0.0.3+  → Future laboratory machines
 ```
 
 ---
 
-## 3. Configure Host/Guest Integration
+## Step 3. Import Kali Linux
 
-### Clipboard
+Kali Linux `2026.2` was imported into VirtualBox and configured as the primary security-testing machine.
 
-```text
-Shared Clipboard: Bidirectional
-```
-
-### Drag & Drop
+### VirtualBox Adapter Configuration
 
 ```text
-Drag & Drop: Bidirectional
+Adapter 1
+Attached to : NAT Network
+Network     : NatNetwork
+Adapter     : Intel PRO/1000 MT Desktop
+Cable       : Connected
 ```
 
-### Shared folder
+### Host / Guest Integration
 
-The host `downloads` directory was configured as a VirtualBox shared folder with auto-mount enabled.
+The following integration features were configured:
 
-This gives the lab a predictable place for moving scripts, wordlists, captures, reports, and other files later.
+```text
+Shared Clipboard : Bidirectional
+Drag & Drop      : Bidirectional
+Shared Folder    : downloads
+Auto-mount       : Enabled
+Permanent        : Enabled
+```
+
+![Kali Linux VM](3-screenshot-kali-linux.png)
+
+The shared `downloads` directory provides a controlled way to move required files between the host and the Kali VM during lab work.
 
 ---
 
-## 4. First Kali Boot — What I Actually Found
+## Step 4. Configure the Kali Linux Network
 
-After the first boot, I did not assume the IP address was already correct.
+The Kali VM was first checked to identify the active network connection and addressing.
 
-I checked:
+Useful commands:
 
 ```bash
-ip a
-```
-
-The VM initially received:
-
-```text
-10.0.0.3/24
-```
-
-That was actually useful information.
-
-DHCP was clearly working, the VM was on the correct subnet, and the problem was simply that the address did not match the required fixed address of `10.0.0.2/24`.
-
-I then checked the route:
-
-```bash
+ip -br addr
 ip route
-```
-
-and found:
-
-```text
-default via 10.0.0.1 dev eth0
-10.0.0.0/24 dev eth0
-```
-
-At that point I knew the VirtualBox network itself was working, so I focused on the guest-side IP configuration instead of changing the NAT Network again.
-
----
-
-# 🌐 Network Configuration
-
-## 5. Identify the Active NetworkManager Profile
-
-```bash
 nmcli connection show
 ```
 
-The active Ethernet connection was:
+The active NetworkManager profile was:
 
 ```text
 Wired connection 1
 ```
 
-That meant I could modify the existing profile rather than creating another connection.
-
----
-
-## 6. Configure Kali with a Static IP
+### Static IPv4 Configuration
 
 ```bash
 sudo nmcli connection modify "Wired connection 1" \
@@ -253,825 +263,525 @@ sudo nmcli connection modify "Wired connection 1" \
   ipv4.dns "10.0.0.1 8.8.8.8"
 ```
 
-### Why I used this
+The resulting network design was:
 
-The assignment required Kali to use a predictable fixed address.
+```text
+IP Address : 10.0.0.2/24
+Gateway    : 10.0.0.1
+DNS        : 10.0.0.1 / 8.8.8.8
+```
 
-NetworkManager was already managing `eth0`, so modifying the existing profile was the cleanest approach and avoids relying on a temporary `ip addr` change.
+![Kali Network Configuration](4-screenshot-kali-network-settings.png)
+
+### Why a Static IP?
+
+A predictable Kali address simplifies:
+
+- future target configuration,
+- network diagrams,
+- Nmap exercises,
+- service testing,
+- documentation,
+- and troubleshooting.
+
+For a cybersecurity lab, consistency is more useful than relying on a changing DHCP address.
 
 ---
 
-## 7. Static IP Reconnection Issue
+## Step 5. Resolve the Network Reconfiguration Issue
 
-The first static configuration did not reconnect cleanly.
+After switching from DHCP to a static IPv4 configuration, the connection required an additional NetworkManager adjustment.
 
-Instead of changing several settings at once, I checked the state and applied the troubleshooting adjustment from the lab material:
-
-```bash
-sudo nmcli connection modify "Wired connection 1" \
-  ipv4.dad-timeout 0
-```
-
-Then I restarted the connection:
+The configuration used was:
 
 ```bash
+sudo nmcli connection modify "Wired connection 1" ipv4.dad-timeout 0
+
 sudo nmcli connection down "Wired connection 1"
+
 sudo nmcli connection up "Wired connection 1"
 ```
 
-I verified the result:
+The interface was then rechecked:
 
 ```bash
 ip -br addr
 ```
 
-Final result:
+Expected final state:
 
 ```text
 eth0   UP   10.0.0.2/24
 ```
 
-### Why I took that approach
-
-The VirtualBox network had already proven itself.
-
-DHCP had already provided a working address, and the route was correct. So rebuilding the VM network would have been solving the wrong problem.
-
-I kept the known-good lower layer intact and worked only on the NetworkManager profile.
+This step was important because it restored the intended static network configuration without forcing or bypassing package dependencies.
 
 ---
 
-# ✅ Connectivity Verification
+## Step 6. Validate the Network
 
-I verified connectivity in layers instead of treating "Internet works" as one test.
-
-## 8. Verify the Gateway
-
-```bash
-ping -c 4 10.0.0.1
-```
-
-Result:
-
-```text
-4 packets transmitted
-4 received
-0% packet loss
-```
-
-This proves Kali can reach the VirtualBox NAT gateway.
-
----
-
-## 9. Verify Internet Connectivity
-
-```bash
-ping -c 4 8.8.8.8
-```
-
-Result:
-
-```text
-4 packets transmitted
-4 received
-0% packet loss
-```
-
-This proves the VM can reach the Internet by IP address without depending on DNS.
-
----
-
-## 10. Verify DNS
-
-```bash
-getent hosts google.com
-```
-
-A valid address for `google.com` was returned.
-
-This is a separate check because:
-
-```text
-Internet connectivity ≠ DNS resolution
-```
-
-The completed verification chain was:
-
-```text
-eth0
-  ↓
-10.0.0.2/24
-  ↓
-10.0.0.1        ✅ gateway
-  ↓
-8.8.8.8         ✅ Internet
-  ↓
-google.com      ✅ DNS
-```
-
----
-
-# 🧩 Guest Additions
-
-## 11. Detect the Version Mismatch
-
-The first Guest Additions version reported by Kali was:
-
-```bash
-VBoxClient --version
-```
-
-Result:
-
-```text
-7.2.8_Debianr173730
-```
-
-The Windows host was running:
-
-```text
-VirtualBox 7.2.16
-```
-
-So there was a version mismatch.
-
-Rather than assuming Guest Additions were completely broken, I checked what was already running.
-
----
-
-## 12. Check VBoxClient Processes
-
-```bash
-ps aux | grep -i VBoxClient
-```
-
-Important processes included:
-
-```text
-VBoxClient --clipboard
-VBoxClient --seamless
-VBoxClient --draganddrop
-VBoxClient --vmsvga-session
-```
-
-This told me that Guest Additions were already installed and active.
-
-That changed the troubleshooting direction: the problem was not simply "Guest Additions are missing."
-
----
-
-## 13. Attach and Mount the Matching ISO
-
-I obtained the matching:
-
-```text
-VBoxGuestAdditions_7.2.16.iso
-```
-
-After attaching it to the VM, I checked the optical device:
-
-```bash
-lsblk
-```
-
-The CD/DVD device appeared as:
-
-```text
-sr0
-```
-
-Kali did not automatically create the expected `/media/kali/` mount, so I created a predictable mount point:
-
-```bash
-sudo mkdir -p /mnt/vboxga
-```
-
-Then:
-
-```bash
-sudo mount /dev/sr0 /mnt/vboxga
-```
-
-The ISO was mounted read-only, which is expected.
-
-I verified its contents:
-
-```bash
-ls -la /mnt/vboxga
-```
-
-and confirmed:
-
-```text
-VBoxLinuxAdditions.run
-```
-
-was present.
-
----
-
-# 🧱 Kernel and Header Investigation
-
-## 14. Check the Running Kernel
-
-```bash
-uname -r
-```
-
-The original kernel was:
-
-```text
-6.19.14+kali-amd64
-```
-
-I checked for the matching kernel build directory:
-
-```bash
-ls -ld /lib/modules/$(uname -r)/build
-```
-
-and:
-
-```bash
-ls -ld /usr/src/linux-headers-$(uname -r)
-```
-
-Both showed that the matching header/build environment was missing.
-
-That meant the Guest Additions kernel modules could not be cleanly built yet.
-
----
-
-## 15. Attempt to Keep the Existing Kernel
-
-I first tried to stay on the existing kernel and obtain its matching header packages.
-
-```bash
-cd ~/Downloads
-```
-
-```bash
-wget https://http.kali.org/pool/main/l/linux/linux-headers-6.19.14+kali-common_6.19.14-1+kali1_all.deb
-```
-
-```bash
-wget https://http.kali.org/pool/main/l/linux/linux-headers-6.19.14+kali-amd64_6.19.14-1+kali1_amd64.deb
-```
-
-Both downloads completed.
-
-I then tried:
-
-```bash
-sudo apt install ./linux-headers-6.19.14+kali-common_6.19.14-1+kali1_all.deb \
-                 ./linux-headers-6.19.14+kali-amd64_6.19.14-1+kali1_amd64.deb
-```
-
-APT reported unsatisfied dependencies, including:
-
-```text
-gcc-15-for-host
-linux-kbuild-6.19.14+kali
-```
-
-I checked them separately:
-
-```bash
-apt-cache policy gcc-15-for-host
-```
-
-The compiler package was available.
-
-Then:
-
-```bash
-apt-cache policy linux-kbuild-6.19.14+kali
-```
-
-and:
-
-```bash
-apt-cache search linux-kbuild-6.19.14
-```
-
-The matching `linux-kbuild` package was not available from the configured repository.
-
----
-
-## 16. Why I Did Not Force the Package Installation
-
-This was one of the more useful decisions during the setup.
-
-I could have tried to force the package installation, but that would have created an incomplete kernel build environment.
-
-Instead, I followed a simpler rule:
-
-> Use a complete, internally consistent kernel/header/build stack rather than forcing one missing dependency into place.
-
-That made the next step more predictable.
-
----
-
-# 🐧 Kernel Compatibility Resolution
-
-## 17. Install the Available Matching Kernel/Header Pair
-
-I checked what Kali currently offered:
-
-```bash
-apt-cache policy linux-image-amd64 linux-headers-amd64
-```
-
-A complete newer kernel/header pair was available.
-
-I installed it with:
-
-```bash
-sudo apt install -y linux-image-amd64 linux-headers-amd64
-```
-
-This installed the matching:
-
-```text
-linux-image-7.1.5+kali-amd64
-linux-headers-7.1.5+kali-amd64
-linux-kbuild-7.1.5+kali
-```
-
-The original `6.19.14` kernel was left installed.
-
-That gave me a clean fallback option if I needed it.
-
----
-
-## 18. Verify the New Kernel
-
-After reboot:
-
-```bash
-uname -r
-```
-
-Result:
-
-```text
-7.1.5+kali-amd64
-```
-
-Then:
-
-```bash
-ls -ld /lib/modules/$(uname -r)/build
-```
-
-The build link pointed to:
-
-```text
-/usr/src/linux-headers-7.1.5+kali-amd64
-```
-
-Now the running kernel and headers matched.
-
----
-
-# 🔧 Guest Additions Installation
-
-## 19. Install Guest Additions 7.2.16
-
-With the ISO mounted and the matching kernel/header environment available:
-
-```bash
-cd /mnt/vboxga
-sudo sh ./VBoxLinuxAdditions.run
-```
-
-The installation completed.
-
-I verified the version:
-
-```bash
-VBoxClient --version
-```
-
-Final result:
-
-```text
-7.2.16r174877
-```
-
-So the host and guest versions now match:
-
-```text
-VirtualBox Host:    7.2.16
-Guest Additions:    7.2.16
-```
-
----
-
-# 🖥️ Session Verification
-
-I checked the actual Kali session:
-
-```bash
-echo $XDG_SESSION_TYPE
-```
-
-Result:
-
-```text
-x11
-```
-
-And:
-
-```bash
-echo $XDG_CURRENT_DESKTOP
-```
-
-Result:
-
-```text
-XFCE
-```
-
-So the final desktop/session combination is:
-
-```text
-XFCE + X11
-```
-
-I kept this in the documentation because graphical/session details are useful when troubleshooting VM integration later.
-
----
-
-# 📂 Shared Folder
-
-The host `downloads` directory was added as a VirtualBox shared folder and configured for auto-mounting.
-
-The intended workflow is:
-
-```text
-Windows Host
-     │
-     │ shared folder
-     ▼
-downloads
-     │
-     ▼
-Kali Linux
-```
-
-I plan to use this for:
-
-- scripts
-- wordlists
-- scan results
-- PCAP files
-- reports
-- lab evidence
-- controlled test files
-
----
-
-# 📸 Snapshots and Recovery
-
-Snapshots were taken during the setup so that troubleshooting remained reversible.
-
-The first baseline was created after reaching a known-good network state.
-
-A later baseline was created after the Guest Additions/kernel work.
-
-The principle is simple:
-
-```text
-Known-good configuration
-          ↓
-       Snapshot
-          ↓
-     Experiment
-          ↓
-   Something breaks?
-          ↓
-       Roll back
-```
-
-That is important for a cybersecurity lab because future exercises may intentionally change services, packages, or system configuration.
-
----
-
-# 🧠 Why I Worked This Way
-
-I wanted the setup process to teach me something beyond just clicking through VirtualBox menus.
-
-### Verify before changing
-
-Commands such as:
-
-```bash
-ip a
-ip route
-nmcli connection show
-uname -r
-```
-
-told me what the machine was actually doing.
-
-### Troubleshoot the correct layer
-
-For example:
-
-```text
-VirtualBox network works
-        ↓
-DHCP works
-        ↓
-Gateway route exists
-        ↓
-IP is wrong
-        ↓
-Fix NetworkManager
-```
-
-There was no reason to rebuild the VirtualBox network.
-
-The same idea applied to Guest Additions:
-
-```text
-VBoxClient exists
-        ↓
-Guest Additions exists
-        ↓
-Version mismatch found
-        ↓
-Kernel build environment missing
-        ↓
-Fix kernel/header layer
-        ↓
-Install matching Guest Additions
-```
-
-### Prefer reversible changes
-
-Snapshots and keeping the old kernel installed gave me room to experiment without turning the lab into a fragile one-way setup.
-
----
-
-# 🧰 Command Reference
-
-These are the commands I want to keep as a reusable Week 1 reference.
-
-## Network
-
-```bash
-ip a
-```
+### Check the Interface
 
 ```bash
 ip -br addr
 ```
 
+### Check the Routing Table
+
 ```bash
 ip route
 ```
 
-```bash
-nmcli connection show
+Expected default route:
+
+```text
+default via 10.0.0.1 dev eth0
 ```
 
-```bash
-nmcli device status
-```
-
-## Connectivity
+### Test the Gateway
 
 ```bash
 ping -c 4 10.0.0.1
 ```
 
+Result:
+
+```text
+4 packets transmitted
+4 packets received
+0% packet loss
+```
+
+### Test Internet Connectivity
+
 ```bash
 ping -c 4 8.8.8.8
 ```
+
+Result:
+
+```text
+4 packets transmitted
+4 packets received
+0% packet loss
+```
+
+### Test DNS Resolution
 
 ```bash
 getent hosts google.com
 ```
 
-## Static IP
+A valid address was returned, confirming that hostname resolution was functioning.
 
-```bash
-sudo nmcli connection modify "Wired connection 1" \
-  ipv4.method manual \
-  ipv4.addresses 10.0.0.2/24 \
-  ipv4.gateway 10.0.0.1 \
-  ipv4.dns "10.0.0.1 8.8.8.8"
+---
+
+## Step 7. Align VirtualBox Guest Additions
+
+The initial Guest Additions environment did not match the installed VirtualBox host version, so I aligned the guest integration environment with the host.
+
+### Host Version
+
+```text
+VirtualBox 7.2.16
 ```
 
-```bash
-sudo nmcli connection modify "Wired connection 1" \
-  ipv4.dad-timeout 0
+### Guest Additions Target
+
+```text
+VirtualBox Guest Additions 7.2.16
 ```
 
-```bash
-sudo nmcli connection down "Wired connection 1"
-```
-
-```bash
-sudo nmcli connection up "Wired connection 1"
-```
-
-## Guest Additions
-
-```bash
-VBoxClient --version
-```
-
-```bash
-ps aux | grep -i VBoxClient
-```
-
-```bash
-lsblk
-```
+The Guest Additions ISO was mounted manually:
 
 ```bash
 sudo mkdir -p /mnt/vboxga
-```
-
-```bash
 sudo mount /dev/sr0 /mnt/vboxga
-```
 
-```bash
 ls -la /mnt/vboxga
 ```
+
+The installer was then executed:
 
 ```bash
 cd /mnt/vboxga
 sudo sh ./VBoxLinuxAdditions.run
 ```
 
-## Kernel / Headers
+---
+
+## Step 8. Resolve Kernel / Header Compatibility
+
+During Guest Additions installation, the running Kali kernel did not have a matching build environment.
+
+The original environment was checked with:
 
 ```bash
 uname -r
-```
-
-```bash
-ls -ld /lib/modules/$(uname -r)/build
-```
-
-```bash
+ls -l /lib/modules/$(uname -r)/build
 ls -ld /usr/src/linux-headers-$(uname -r)
 ```
 
-```bash
-apt-cache policy linux-image-amd64 linux-headers-amd64
-```
+The missing kernel-header/build dependency was identified before proceeding.
 
-```bash
-apt-cache policy linux-kbuild-6.19.14+kali
-```
-
-```bash
-apt-cache search linux-kbuild-6.19.14
-```
+Rather than forcing an incomplete dependency chain, the available complete Kali kernel and header packages were installed:
 
 ```bash
 sudo apt install -y linux-image-amd64 linux-headers-amd64
 ```
 
-## Desktop/session
+After rebooting, the new kernel was verified:
 
 ```bash
-echo $XDG_SESSION_TYPE
+uname -r
 ```
 
-```bash
-echo $XDG_CURRENT_DESKTOP
-```
-
----
-
-# 🧪 Verification Matrix
-
-| Test | Command / Check | Result |
-|---|---|:---:|
-| Kali interface | `ip -br addr` | ✅ |
-| Kali IP | `10.0.0.2/24` | ✅ |
-| Routing | `ip route` | ✅ |
-| Gateway | `ping -c 4 10.0.0.1` | ✅ |
-| Internet | `ping -c 4 8.8.8.8` | ✅ |
-| DNS | `getent hosts google.com` | ✅ |
-| NetworkManager | `nmcli connection show` | ✅ |
-| Guest Additions | `VBoxClient --version` | ✅ |
-| Guest Additions version | `7.2.16r174877` | ✅ |
-| Kernel | `7.1.5+kali-amd64` | ✅ |
-| Kernel build directory | `/lib/modules/.../build` | ✅ |
-| Desktop | XFCE | ✅ |
-| Session | X11 | ✅ |
-| Clipboard | Bidirectional | ✅ |
-| Drag & Drop | Bidirectional | ✅ |
-| Shared folder | `downloads` | ✅ |
-| Snapshot | Baseline created | ✅ |
-
----
-
-# 📦 Final State
+Final kernel environment:
 
 ```text
-VirtualBox 7.2.16
-│
-└── Kali Linux 2026.2
-    │
-    ├── XFCE / X11
-    │
-    ├── eth0
-    │   └── 10.0.0.2/24
-    │
-    ├── Gateway
-    │   └── 10.0.0.1
-    │
-    ├── Network
-    │   └── 10.0.0.0/24
-    │
-    ├── Internet
-    │   └── Verified
-    │
-    ├── DNS
-    │   └── Verified
-    │
-    ├── Guest Additions
-    │   └── 7.2.16
-    │
-    ├── Clipboard
-    │   └── Bidirectional
-    │
-    ├── Drag & Drop
-    │   └── Bidirectional
-    │
-    ├── Shared Folder
-    │   └── downloads
-    │
-    └── Snapshot
-        └── Week 1 baseline
+7.1.5+kali-amd64
+```
+
+The matching build directory was present:
+
+```text
+/lib/modules/7.1.5+kali-amd64/build
+```
+
+This provided a proper environment for compiling the Guest Additions kernel modules.
+
+---
+
+## Step 9. Verify Guest Additions
+
+The final Guest Additions version was checked and aligned with the host:
+
+```text
+Guest Additions : 7.2.16
+Host VirtualBox : 7.2.16
+```
+
+Additional session checks included:
+
+```bash
+ps aux | grep -i VBoxClient
+```
+
+The environment was running under:
+
+```text
+Desktop : XFCE
+Session : X11
 ```
 
 ---
 
-# 🔐 Lab Safety
+## Step 10. Create a Clean Snapshot
 
-This environment is intended for systems that I own or have explicit permission to test.
+Once the environment was configured and verified, a baseline VirtualBox snapshot was created.
 
-Future scanning, exploitation, packet analysis, and vulnerability-testing work will be performed against machines intentionally added to this isolated lab.
+The snapshot serves as a known-good restore point before future security experiments.
 
-The purpose of the NAT Network is to keep those experiments inside a controlled virtual environment rather than treating the physical network as the test environment.
+Conceptually:
+
+```text
+Clean Baseline
+      │
+      ├── Security Testing
+      ├── Tool Installation
+      ├── Network Experiments
+      └── Configuration Changes
+                │
+                ▼
+         Restore Baseline
+```
+
+This is especially useful when experimenting with security tooling where configuration changes may be intentional and destructive.
 
 ---
 
-# 🚀 Next Steps
+# 🔎 Lab Verification
 
-With the base Kali attacker VM established, the next stage can build the target side of the lab.
+The final environment was verified using the following checks.
 
-Planned additions include:
+| ✅ Test | 🧾 Command | 🎯 Result |
+|---|---|---|
+| IP address | `ip -br addr` | `10.0.0.2/24` |
+| Default route | `ip route` | `10.0.0.1` |
+| Gateway reachability | `ping -c 4 10.0.0.1` | PASS |
+| Internet reachability | `ping -c 4 8.8.8.8` | PASS |
+| DNS resolution | `getent hosts google.com` | PASS |
+| Guest Additions | Version check | PASS |
+| Kernel build environment | `/lib/modules/.../build` | PASS |
+| Clipboard | VirtualBox settings | PASS |
+| Drag & Drop | VirtualBox settings | PASS |
+| Shared folder | `downloads` | PASS |
+| Snapshot | Baseline snapshot | PASS |
+
+### Network Verification Summary
 
 ```text
 Kali Linux
-10.0.0.2
-   │
-   ├── Windows target
-   ├── Linux target
-   ├── Vulnerable web application
-   ├── Metasploitable / CTF target
-   └── Additional test machines
-```
-
-The same verification pattern will be used for future machines:
-
-```text
-Configure
-   ↓
-Inspect
-   ↓
-Test
-   ↓
-Document
-   ↓
-Snapshot
+10.0.0.2/24
+     │
+     ▼
+Gateway
+10.0.0.1
+     │
+     ▼
+Internet
+8.8.8.8
+     │
+     ▼
+DNS
+google.com → resolved
 ```
 
 ---
 
-# 🏁 Conclusion
+# 🐞 Problems Encountered & Solutions
 
-Week 1 established the foundation for the cybersecurity lab.
+Documenting real troubleshooting decisions is an important part of this project because it demonstrates how the environment was stabilized rather than simply showing the final state.
 
-The important part was not just getting Kali to boot. I wanted to understand what each layer was doing and be able to explain why the configuration looks the way it does.
+## Problem 1. Static IPv4 Reconfiguration
 
-The environment now has a predictable attacker address, a dedicated private NAT Network, working Internet and DNS, matching Guest Additions, host/guest integration, shared storage, and recovery snapshots.
+After applying the static address, the interface did not immediately return to the required state.
 
-The troubleshooting was part of the learning process. I started with a DHCP-assigned `10.0.0.3`, moved to the required static `10.0.0.2`, dealt with a NetworkManager reconnection issue, investigated a Guest Additions version mismatch, found that the original kernel did not have the required build environment, avoided forcing an incomplete dependency chain, and moved to a complete matching kernel/header stack before installing Guest Additions.
+### Solution
 
-That gave me a much better understanding of the lab than simply following a checklist.
+```bash
+sudo nmcli connection modify "Wired connection 1" ipv4.dad-timeout 0
+sudo nmcli connection down "Wired connection 1"
+sudo nmcli connection up "Wired connection 1"
+```
+
+The interface was then verified with:
+
+```bash
+ip -br addr
+```
+
+Result:
+
+```text
+eth0   UP   10.0.0.2/24
+```
+
+---
+
+## Problem 2. Guest Additions / Kernel Build Environment
+
+The Guest Additions installer required kernel headers and a valid kernel build path.
+
+The environment was checked instead of assuming the required files existed:
+
+```bash
+uname -r
+ls -l /lib/modules/$(uname -r)/build
+```
+
+When the exact matching header dependency chain was incomplete, I avoided forcing the installation and instead installed the complete Kali image/header pair:
+
+```bash
+sudo apt install -y linux-image-amd64 linux-headers-amd64
+```
+
+After rebooting, the kernel and headers were aligned and Guest Additions could be installed successfully.
+
+### Key Lesson
+
+A reproducible Linux troubleshooting process should verify:
+
+```text
+Running Kernel
+      ↓
+Matching Headers
+      ↓
+Build Directory
+      ↓
+Module Compilation
+      ↓
+Guest Integration
+```
+
+---
+
+# 🧠 Engineering Decisions
+
+## Predictable IP Addressing
+
+Using `10.0.0.2/24` gives the Kali VM a stable identity inside the lab.
+
+That becomes valuable later when documenting target systems, scanner output, attack paths, and network traffic.
+
+## Dedicated NAT Network
+
+A shared NAT Network provides more flexibility than a single-machine NAT setup because future virtual machines can communicate through the same laboratory segment.
+
+## Clean Recovery Point
+
+The snapshot is treated as an actual lab control rather than an afterthought. Future exercises can begin from a known-good environment.
+
+## Verify Before Modifying
+
+A recurring approach throughout the setup was:
+
+```text
+Observe
+  ↓
+Identify
+  ↓
+Modify
+  ↓
+Verify
+```
+
+Examples include checking `nmcli`, `ip route`, kernel information, and build paths before making changes.
+
+---
+
+# 💡 What I Learned
+
+### 1. Virtual Machine Networking
+
+I learned how VirtualBox networking modes affect communication between virtual machines and external networks.
+
+### 2. NAT vs NAT Network
+
+A NAT Network is useful when multiple VMs need to communicate with each other while still having outbound connectivity.
+
+### 3. Static IPv4 Configuration
+
+I learned how to configure and validate IPv4 addresses, gateways, routes, and DNS using NetworkManager.
+
+### 4. Linux Kernel / Header Dependencies
+
+I learned that kernel-module installation depends on having a compatible kernel build environment, not simply the installer itself.
+
+### 5. Guest Integration
+
+VirtualBox Guest Additions provide the integration layer needed for practical host/guest interaction and should be kept aligned with the host environment.
+
+### 6. Recovery Strategy
+
+A clean snapshot provides a reliable baseline before performing experimental or potentially disruptive security exercises.
+
+### 7. Cybersecurity Documentation
+
+A security project is stronger when it shows not only the final configuration, but also the reasoning, validation, and recovery process behind it.
+
+---
+
+# 🔐 Security & Ethical Use
+
+This laboratory is intended strictly for **education, research, and authorized security testing**.
+
+Any scanning, exploitation, credential testing, or other offensive-security activity must be limited to:
+
+```text
+✔ Systems I own
+✔ Deliberately vulnerable lab targets
+✔ Environments where explicit authorization exists
+```
+
+Unauthorized testing of external systems is not part of this project.
+
+---
+
+# 🧰 Tools & Resources
+
+| Tool | Purpose |
+|---|---|
+| VirtualBox | Virtualization and VM management |
+| Kali Linux | Security-testing platform |
+| NetworkManager / `nmcli` | Network configuration |
+| `iproute2` | Interface and routing validation |
+| `ping` | Connectivity testing |
+| `getent` | DNS / name-resolution validation |
+| VirtualBox Guest Additions | Host/guest integration |
+
+Official resources:
+
+- [VirtualBox](https://www.virtualbox.org/)
+- [Kali Linux](https://www.kali.org/)
+- [7-Zip](https://www.7-zip.org/)
+
+---
+
+# 📸 Evidence & Screenshots
+
+The repository includes screenshots documenting important stages of the environment:
+
+```text
+01  →  Network configuration
+02  →  NAT Network
+03  →  Kali VM configuration
+04  →  Kali network configuration
+```
+
+The screenshots are intended to support the written configuration and verification results.
+
+> **Note:** Image ordering may vary depending on how the repository is viewed or updated.
+
+---
+
+# ✅ Final Lab Status
+
+```text
+┌─────────────────────────────────────────────────────┐
+│              WEEK 01 LAB FOUNDATION                 │
+├─────────────────────────────────────────────────────┤
+│ VirtualBox 7.2.16                 ✅ READY          │
+│ Kali Linux 2026.2                 ✅ READY          │
+│ NAT Network 10.0.0.0/24           ✅ READY          │
+│ Kali IP 10.0.0.2/24               ✅ VERIFIED       │
+│ Gateway 10.0.0.1                  ✅ VERIFIED       │
+│ Internet Connectivity             ✅ VERIFIED       │
+│ DNS Resolution                    ✅ VERIFIED       │
+│ Guest Additions 7.2.16            ✅ ALIGNED        │
+│ Kernel / Headers                  ✅ READY          │
+│ Shared Folder                     ✅ CONFIGURED     │
+│ Clipboard / Drag & Drop           ✅ CONFIGURED     │
+│ Clean Snapshot                    ✅ CREATED        │
+└─────────────────────────────────────────────────────┘
+```
+
+### Result
 
 **Week 01 — LAB FOUNDATION COMPLETE ✅**
 
+The environment is now ready to support future cybersecurity labs involving network enumeration, vulnerable target deployment, web application security, packet analysis, detection engineering, and penetration-testing practice.
+
+---
+
+# 👤 Author
+
+**Bala Chandrashekar**  
+Cybersecurity | Offensive Security | Network Security
+
+This repository is part of my hands-on cybersecurity learning journey, focused on building practical environments and documenting the decisions behind them.
+
+---
+
+# 📌 Project Information
+
+| Field | Details |
+|---|---|
+| Program | Cybersecurity / Penetration Testing Lab |
+| Week | 01 |
+| Project | VirtualBox & Kali Linux Lab Setup |
+| Platform | VirtualBox |
+| Security OS | Kali Linux 2026.2 |
+| Network | `10.0.0.0/24` |
+| Kali Address | `10.0.0.2/24` |
+| Status | Complete ✅ |
+
+---
+
+<div align="center">
+
+### 🔐 Build it. Break it. Understand it. Secure it.
+
+**Cybersecurity Lab — Week 01**
+
+</div>
