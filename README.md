@@ -88,17 +88,17 @@ This repository implements the Week 01 laboratory foundation: virtualization, Ka
                     Windows + VirtualBox 7.2.16
                                │
                                │
-                    ┌──────────▼───────────┐
-                    │      NatNetwork      │
-                    │     10.0.0.0/24      │
-                    │      Gateway .1      │
-                    └──────────┬───────────┘
+                     ──────────▼──────────
+                    │      NatNetwork         │
+                    │     10.0.0.0/24         │
+                    │      Gateway .1         │
+                     ──────────┬───────────
                                │
-                        ┌──────▼──────┐
-                        │ Kali Linux  │
-                        │   2026.2    │
-                        │ 10.0.0.2/24 │
-                        └─────────────┘
+                         ──────▼──────
+                        │  Kali Linux    │
+                        │    2026.2      │
+                        │  10.0.0.2/24.  │
+                         ─────────────
 
         Future target / analysis VMs can be added later:
                   10.0.0.3 → 10.0.0.99
